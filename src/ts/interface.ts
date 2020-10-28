@@ -2,6 +2,9 @@ import { Router } from '@/router';
 
 export interface IPage {
   toHtml(): HTMLElement;
+  destroy?(): Promise<void> | void;
+  beforeRenderElement?(): Promise<void> | void;
+  afterRenderElement?(): Promise<void> | void;
 }
 
 export interface IPageParams {

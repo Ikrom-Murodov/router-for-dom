@@ -23,8 +23,8 @@ export class Router {
    * This method is called when the class constructor fires.
    * @private
    */
-  private init(): void {
-    this.push(window.location.pathname);
+  private async init(): Promise<void> {
+    await this.push(window.location.pathname);
   }
 
   /**
@@ -33,13 +33,15 @@ export class Router {
    * @param{string} path - Url address to go to a new page.
    * @public
    */
-  public push(path: string): void {
+  public async push(path: string): Promise<void> {
     const response: IRoute | null = findADynamicOrSimpleRoute(
       path,
       this.params.routes,
     );
 
-    if (response) this.render(response);
+    if (response) {
+      await this.render(response);
+    }
   }
 
   /**
@@ -61,6 +63,7 @@ export class Router {
    * @private
    */
   private async render(route: IRoute): Promise<void> {
+    await this.destroy();
     window.history.pushState(route.state, '', route.path);
 
     if (route.page.prototype) {
@@ -69,7 +72,7 @@ export class Router {
         stateHistory: this.getStateHistory(),
       });
 
-      this.updateRootElement();
+      await this.updateRootElement();
     } else {
       const Page = await (route.page as TLazyLoadingPage)();
 
@@ -78,7 +81,7 @@ export class Router {
         stateHistory: this.getStateHistory(),
       });
 
-      this.updateRootElement();
+      await this.updateRootElement();
     }
   }
 
@@ -86,8 +89,47 @@ export class Router {
    * Updates the content of the html element.
    * @private
    */
-  private updateRootElement(): void {
+  private async updateRootElement(): Promise<void> {
+    await this.beforeRenderElement();
+
     this.params.el.textContent = '';
     this.params.el.append(this.page.toHtml());
+
+    await this.afterRenderElement();
+  }
+
+  // hooks
+
+  /**
+   * This hook will fire after push method has been called.
+   * @private
+   * @return {Promise<void>}
+   */
+  private async destroy(): Promise<void> {
+    if (this.page?.destroy) {
+      await this.page.destroy();
+    }
+  }
+
+  /**
+   * This hook will fire before changing the content of the html element.
+   * @private
+   * @return {Promise<void>}
+   */
+  private async beforeRenderElement(): Promise<void> {
+    if (this.page?.beforeRenderElement) {
+      await this.page.beforeRenderElement();
+    }
+  }
+
+  /**
+   * This hook will fire after changing content of html element.
+   * @private
+   * @return {Promise<void>}
+   */
+  private async afterRenderElement(): Promise<void> {
+    if (this.page?.afterRenderElement) {
+      await this.page.afterRenderElement();
+    }
   }
 }
