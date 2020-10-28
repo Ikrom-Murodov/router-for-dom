@@ -1,5 +1,7 @@
 /* eslint-disable operator-linebreak,@typescript-eslint/no-shadow,no-param-reassign */
 
+import { IRoute } from '@/interface';
+
 /**
  * This interface for an object whose keys and values must be a string.
  * @interface
@@ -194,4 +196,50 @@ function compareASimpleUrlWithADynamicUrl(
     ids,
     comparisonResult,
   };
+}
+
+/**
+ * This function finds the desired route and returns it modified.
+ *
+ * @example
+ * const path = '/about/Ikrom/Murodov';
+ * const route = [
+ *  {
+ *   path: '/about/:name/:surname',
+ *    state: {
+ *      title: 'some title'
+ *    },
+ *    page: About,
+ *  }
+ * ]
+ * const result = {
+ *  path: '/about/Ikrom/Murodov',
+ *  page: About,
+ *  state: {name: 'Ikrom', surname: 'Murodov', title: 'some title'}
+ * }
+ * findADynamicOrSimpleRoute(path, route) // result
+ *
+ * @param {string} path
+ * @param {Array} routes
+ * @return {Object | null} Returns route either null.
+ */
+export function findADynamicOrSimpleRoute(
+  path: string,
+  routes: IRoute[],
+): IRoute | null {
+  let result: IRoute | null = null;
+
+  routes.forEach((route): void => {
+    const data = compareASimpleUrlWithADynamicUrl(path, route.path);
+
+    if (data.comparisonResult) {
+      result = {
+        ...route,
+        path,
+        state: { ...route.state, ...data.ids },
+      };
+    }
+  });
+
+  return result;
 }
