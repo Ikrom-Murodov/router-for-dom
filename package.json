@@ -1,7 +1,7 @@
 {
   "name": "router-for-dom",
-  "version": "0.0.0",
-  "description": "",
+  "version": "1.0.0",
+  "description": "Routing library for DOM.",
   "main": "src/ts/index.ts",
   "scripts": {
     "dev": "node -r esm webpack/dev.js",
