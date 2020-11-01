@@ -15,6 +15,12 @@ export class Router {
    */
   private page!: IPage;
 
+  /**
+   * This field stores the current html element.
+   * @private
+   */
+  private htmlElement!: HTMLElement;
+
   constructor(private params: IRouterParams) {
     this.init();
   }
@@ -25,6 +31,13 @@ export class Router {
    */
   private async init(): Promise<void> {
     await this.push(window.location.pathname);
+
+    document.body.addEventListener('click', async (event) => {
+      const element: HTMLElement = event.target as HTMLElement;
+      const url = element.getAttribute('data-router-link');
+
+      if (url) await this.push(url);
+    });
   }
 
   /**
@@ -64,7 +77,9 @@ export class Router {
    */
   private async render(route: IRoute): Promise<void> {
     await this.destroy();
+    this.activeClass('remove');
     window.history.pushState(route.state, '', route.path);
+    this.activeClass('add');
 
     if (route.page.prototype) {
       this.page = new (route.page as TSimplePage)({
@@ -86,14 +101,31 @@ export class Router {
   }
 
   /**
+   * Adds or removes a class from an html element depending on the parameter.
+   * @param {string} type - remove or add a class
+   * @private
+   */
+  private activeClass(type: 'add' | 'remove'): void {
+    const elements = document.querySelectorAll(
+      `[data-router-link="${window.location.pathname}"]`,
+    );
+
+    if (elements) {
+      elements.forEach((element) => {
+        element.classList[type]('active-class');
+      });
+    }
+  }
+
+  /**
    * Updates the content of the html element.
    * @private
    */
   private async updateRootElement(): Promise<void> {
     await this.beforeRenderElement();
 
-    this.params.el.textContent = '';
-    this.params.el.append(this.page.toHtml());
+    this.htmlElement = this.page.toHtml();
+    this.params.el.append(this.htmlElement);
 
     await this.afterRenderElement();
   }
@@ -108,6 +140,9 @@ export class Router {
   private async destroy(): Promise<void> {
     if (this.page?.destroy) {
       await this.page.destroy();
+      this.htmlElement?.remove();
+    } else {
+      this.htmlElement?.remove();
     }
   }
 
