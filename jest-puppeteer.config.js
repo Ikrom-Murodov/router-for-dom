@@ -1,6 +1,6 @@
 module.exports = {
   launch: {
-    headless: false,
+    headless: true,
     slowMo: 60,
     timeout: 0,
     defaultViewport: {

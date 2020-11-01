@@ -122,7 +122,7 @@ export function getId(simpleUrl: string, dynamicUrl: string): IIds {
  * @throws Throws an error if the arguments are not a string.
  * @return {Object}
  */
-function compareASimpleUrlWithADynamicUrl(
+export function compareASimpleUrlWithADynamicUrl(
   simpleUrl: string,
   dynamicUrl: string,
 ): { comparisonResult: boolean; ids: IIds } {
