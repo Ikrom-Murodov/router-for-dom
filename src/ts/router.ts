@@ -124,7 +124,7 @@ export class Router {
   private async updateRootElement(): Promise<void> {
     await this.beforeRenderElement();
 
-    this.htmlElement = this.page.toHtml();
+    this.htmlElement = await this.page.toHtml();
     this.params.el.append(this.htmlElement);
 
     await this.afterRenderElement();

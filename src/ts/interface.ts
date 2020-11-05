@@ -1,15 +1,31 @@
-import { Router } from '@/router';
-
 export interface IPage {
-  toHtml(): HTMLElement;
+  toHtml(): Promise<HTMLElement> | HTMLElement;
   destroy?(): Promise<void> | void;
   beforeRenderElement?(): Promise<void> | void;
   afterRenderElement?(): Promise<void> | void;
 }
 
+export interface IRouter {
+  /**
+   * To navigate to a different URL, use router.push.
+   *
+   * @param{string} path - Url address to go to a new page.
+   * @public
+   */
+  push(path: string): Promise<void>;
+
+  /**
+   * This function returns the states of the browser history.
+   *
+   * @public
+   * @returns {Object} - history state
+   */
+  getStateHistory(): { [key: string]: string };
+}
+
 export interface IPageParams {
   stateHistory: { [key: string]: string };
-  router: Router;
+  router: IRouter;
 }
 
 export type TLazyLoadingPage = () => Promise<{

@@ -7,4 +7,5 @@ export {
   TSimplePage,
   TLazyLoadingPage,
   IRouterParams,
+  IRouter,
 } from '@/interface';
