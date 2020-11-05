@@ -64,13 +64,13 @@ yarn add router-for-dom
 
 ```ts 
 // 1) We importing the router class.
-import { Router } from 'router-for-dom';
+import { Router, IRouter } from 'router-for-dom';
 
 // 2) We are importing the pages we want to use.
 import { Contact, AboutMe, Home } from 'src/pages';
 
 // 3) We create an instance of the router class and pass parameters to it.
-const router: Router = new Router({
+const router: IRouter = new Router({
   // Should be the html element on which the pages will be rendered.
   el: document.querySelector('#app') as HTMLElement,
 
@@ -108,7 +108,7 @@ export class Home implements IPage {
   }
 
   private init(): void {
-    console.log('home: params', this.params); // { router: Router -> router class instance, stateHistory: {} }
+    console.log('home: params', this.params); // { router: IRouter -> router class instance, stateHistory: {} }
   }
 
   // the router will call this method to get the page content.
@@ -148,7 +148,7 @@ export class AboutMe implements IPage {
   }
 
   private init(): void {
-    console.log('about-me: params', this.params); // { router: Router -> router class instance, stateHistory: {} }
+    console.log('about-me: params', this.params); // { router: IRouter -> router class instance, stateHistory: {} }
   }
 
   // the router will call this method to get the page content.
@@ -191,7 +191,7 @@ export class Contact implements IPage {
     console.log('contact: params', this.params);
     /**
      * {
-     *   router: Router -> router class instance,
+     *   router: IRouter -> router class instance,
      *   stateHistory: { email: 'ikrommurodov2001@gmail.com' }
      * }
      */
@@ -250,13 +250,13 @@ we can use a dynamic segment in the route to achieve this:
 
 ```ts
 // 1) We importing the router class.
-import { Router } from 'router-for-dom';
+import { Router, IRouter } from 'router-for-dom';
 
 // 2) We are importing the pages we want to use.
 import { User } from 'src/pages';
 
 // 3) We create an instance of the router class and pass parameters to it.
-const router: Router = new Router({
+const router: IRouter = new Router({
   // Should be the html element on which the pages will be rendered.
   el: document.querySelector('#app') as HTMLElement,
 
@@ -284,7 +284,7 @@ export class User implements IPage {
     console.log('user: params', this.params);
     /**
      * {
-     *   router: Router -> router class instance,
+     *   router: IRouter -> router class instance,
      *   stateHistory: { Id: dynamic }
      * }
      */
@@ -338,13 +338,13 @@ going to the corresponding route.
 
 ```ts 
 // 1) We importing the router class.
-import { Router } from 'router-for-dom';
+import { Router, IRouter } from 'router-for-dom';
 
 // 2) We are importing the pages we want to use.
 import { Contact, AboutMe, Home } from 'src/pages';
 
 // 3) We create an instance of the router class and pass parameters to it.
-const router: Router = new Router({
+const router: IRouter = new Router({
   // Should be the html element on which the pages will be rendered.
   el: document.querySelector('#app') as HTMLElement,
 
@@ -382,13 +382,13 @@ const router: Router = new Router({
 
 ```ts 
 // 1) We importing the router class.
-import { Router } from 'router-for-dom';
+import { Router, IRouter } from 'router-for-dom';
 
 // 2) We are importing the pages we want to use.
 import { Contact, AboutMe, Home } from 'src/pages';
 
 // 3) We create an instance of the router class and pass parameters to it.
-const router: Router = new Router({
+const router: IRouter = new Router({
   // Should be the html element on which the pages will be rendered.
   el: document.querySelector('#app') as HTMLElement,
 
@@ -426,13 +426,13 @@ router.push('/About-me');
 
 ```ts 
 // 1) We importing the router class.
-import { Router } from 'router-for-dom';
+import { Router, IRouter } from 'router-for-dom';
 
 // 2) We are importing the pages we want to use.
 import { Contact, AboutMe, Home } from 'src/pages';
 
 // 3) We create an instance of the router class and pass parameters to it.
-const router: Router = new Router({
+const router: IRouter = new Router({
   // Should be the html element on which the pages will be rendered.
   el: document.querySelector('#app') as HTMLElement,
 
